@@ -4,17 +4,22 @@ module.exports = {
 
     async cadastrar(request, response) {
         const { nome, categoria, preco, estoque, unidade, marca, descricao } = request.body
-        await conexao('produtos').insert({
-            nome,
-            categoria,
-            preco,
-            estoque,
-            unidade,
-            marca,
-            descricao
-        });
 
-        return response.status(201).send()
+        try {
+            await conexao('produtos').insert({
+                nome,
+                categoria,
+                preco,
+                estoque,
+                unidade,
+                marca,
+                descricao
+            });
+
+            return response.status(201).send()
+        } catch (error) {
+            return response.status(406).json(error)
+        }
     },
 
     async listar(request, response) {
